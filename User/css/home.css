@@ -1,0 +1,67 @@
+.carousel-image{
+    width:100%; 
+    background-size: cover; 
+    height:950px;
+    background-position: center;
+    background-repeat: no-repeat;
+
+
+}
+
+.fading-gradient{
+
+    background: rgb(255,255,255);
+background: linear-gradient(90deg, rgba(255,255,255,1) 22%, rgba(255,255,255,0) 100%);
+    width:inherit;
+    height: inherit;
+}
+
+.justify{
+
+
+    text-align: justify;
+    padding: 0 30px !important;
+}
+.hrstyle{
+    width: 65px;
+    height: 3px;
+    border: none;
+    margin-bottom: -1px;
+    display: inline-block;
+    background-color: #3957ff;
+    border-radius: 3px;
+}
+.slogan-container h1{
+    margin-top:0 !important;
+    font-weight: bolder;
+    color:#212025;
+}
+
+.slogan-container{
+    width:800px;
+    padding-left:200px;
+    margin-top:-340px; 
+    position: absolute;
+     height:200px;
+     font-size:xx-large;
+}
+.slogan{
+    display:inline-block;
+     color:#3957ff;
+}
+
+.ad-imgs{
+    display:inline-flex;
+     max-width:23%;
+      /* margin:0 10px;   */
+      overflow: hidden;
+      }
+
+  .ad-imgs img{
+    height:200px;
+  }   
+  .ads-container{
+      margin-top:50px;
+    justify-content: center;
+    display:flex;
+  } 
