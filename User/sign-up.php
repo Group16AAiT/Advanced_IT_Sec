@@ -65,7 +65,7 @@
                              <div class="input-field col s12">
                              <button id="sbtn" class="btn blue lighten-3 waves-effect waves-light" type="submit" name="Registeruser">SIGN UP
   </button>
-                             <div class='link'><a  href="index.php">Already have an account? Log in</a></div>
+                             <div class='link'><a  href="login.php">Already have an account? Log in</a></div>
                            
                            </div>
                            
