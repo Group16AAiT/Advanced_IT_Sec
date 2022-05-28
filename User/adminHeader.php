@@ -3,10 +3,11 @@ session_start();
 ini_set("display_errors",1);
 if(!isset($_SESSION["USER_NAME"])){
     header("Location:login.php");
+    die();
 }
 else{
-    if($_SESSION["ROLE"] == 2){
-        header("Location:admin.php");
+    if($_SESSION["ROLE"] == 1){
+        header("Location:index.php");
     }
 
 }
@@ -23,12 +24,9 @@ else{
     <header>
         <nav>
             <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="feedback.php">Feedback</a></li>
-                <li><a href="">Review</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="sign-up.php">Signup</a></li>    
-                <li><a href="logout.php">logout</a></li>  
+                <li><a href="">Users</a></li>
+                <li><a href="userFeedback.php">User Feedbacks</a></li>
+                <li><a href="logout.php">Logout</a></li>    
             </ul>
             
         </nav>

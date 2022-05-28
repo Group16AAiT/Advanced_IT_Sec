@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,10 +43,19 @@
                                 <label for="password" >Password</label>
                              </div>
                           </div>
-                
+                          <div class="row">
+                              <div class="input-field col s12">
+                                 <div class="input-group">
+                                       <img src='../Manager/captcha.php' >
+                                      
+                                       <input required type="text"name="captcha">
+                                      
+                                    </div>
+                              </div>
+                           </div>
                           <div class="row">
                              <div class="input-field col s12">
-                             <input type="submit" name="login" class="btn" value="log in"> 
+                             <input type="submit" name="user_login" class="btn" value="log in"> 
                              <div class='link'><a  href="sign-up.php">Don-t have an account? Sign up</a></div>
                            
                            </div>
