@@ -6,7 +6,7 @@ if(!isset($_SESSION["USER_NAME"])){
     die();
 }
 else{
-    if($_SESSION["ROLE"] == 1){
+    if($_SESSION["ROLE"] != 2){
         header("Location:index.php");
     }
 
@@ -24,7 +24,7 @@ else{
     <header>
         <nav>
             <ul>
-                <li><a href="">Users</a></li>
+                <li><a href="ban.php">Users</a></li>
                 <li><a href="userFeedback.php">User Feedbacks</a></li>
                 <li><a href="logout.php">Logout</a></li>    
             </ul>
