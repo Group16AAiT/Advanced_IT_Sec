@@ -3,11 +3,11 @@
     include '../Manager/TokenGenerate.php';
     
 ?>
-    <form action="../Manager/submitFeedback.php" method="post" id="feedbackForm">
+    <form action="../Manager/submitFeedback.php" method="post" id="feedbackForm" enctype="multipart/form-data">
 Name: <input type="text" name="name"><br/>
 Email: <input type="email" name="email"><br/>
 Comment: <textarea name="comment" >Enter comment here...</textarea><br/>
-<input type="file" name="file"><br/>
+<input type="file" name="PDFfile"><br/>
 
 <div class="row">
     <div class="input-field col s12">
@@ -22,6 +22,5 @@ Comment: <textarea name="comment" >Enter comment here...</textarea><br/>
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
 <button type="submit" name="submitFeedback">Submit Comment</button>
 
-    </form>
 </body>
 </html>
