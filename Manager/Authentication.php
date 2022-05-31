@@ -1,77 +1,91 @@
 <?php
+include_once 'config.php';
 include 'TokenGenerate.php';
-if(!isset($_POST['user_login']) ){
-    header("Location:../User/login.php");
-}else{
-    if(isset($_POST['captcha']) && checkCaptcha($_POST['captcha'])){
-        include_once 'config.php';
-        $email=$_POST['userEmail'];
-        $password=$_POST['userPassword'];
-        
+include 'error.php';
+if (isset($_POST['user_login'])) {
+    $email = htmlspecialchars(($_POST['userEmail']));
+    $password = htmlspecialchars(($_POST['userPassword']));
+
+    if (empty($username)) {
+        $userNameError =  "Username is required";
+    }
+    if (empty($password)) {
+        $passwordError =  "Password is required";
+    }
+    if (isset($_POST['captcha']) && checkCaptcha($_POST['captcha'])) {
+
+
         // $query="SELECT * FROM users WHERE email=".$email."AND passoword=".$password."";
-    
-        $query="SELECT * FROM users WHERE email='$email' AND password='$password' ";
-        $stmt=mysqli_stmt_init($conn);
-        $user=mysqli_num_rows(mysqli_query($conn,$query));
-        if($user>=1){
-            if(!mysqli_stmt_prepare($stmt,$query)){
-                header("Location:../User/login.php");
-                die();
-            }else{
-        
-                mysqli_stmt_execute($stmt);
-                $result=mysqli_stmt_get_result($stmt);
-                while($row=mysqli_fetch_assoc($result)){;
-                    $_SESSION['USER_NAME']=$row['user_name'];
-                    $_SESSION['ROLE']=$row["role"];
-                    header("Location:../User/index.php");
-                    die();
+
+        $query = "SELECT * FROM users WHERE email=?";
+        $stmt = mysqli_stmt_init($conn);
+
+        if (!mysqli_stmt_prepare($stmt, $query)) {
+            $generalError =  "Something Went wrong";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $email);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $userFound = false;
+            while ($row = mysqli_fetch_assoc($result)) {
+                if (password_verify($password, $row['password'])) {
+                    echo "here";
+                    $_SESSION['USER_NAME'] = $row['user_name'];
+                    $_SESSION['ROLE'] = $row["role"];
+                    $userFound = true;
+                    if ($row['ban'] == true) {               
+                        $generalError =  "Your account has been banned";
+                    } else {
+
+                        header("Location:../User/index.php", true, 303);
+                        die();
+                    }
                 }
-    
+                else{
+                    echo "Not here ".password_verify('12345678','$2y$10$m9Rgv54pFkkPg03E1ZKNAeIcyQIzeNQZ6lYWOVTnnea');
+                }
             }
-        }else{
-        //  echo $user;
-            header("Location:../User/login.php");
-            die();
+            if (!$userFound) {
+                $generalError =  "Incorrect email or password";
+            }
         }
+        mysqli_stmt_close($stmt);
+    } else {
+        $captchaError = "Incorrect captcha";
     }
 }
 
-if(!isset($_POST['admin_login']) ){
-    header("Location:../User/login.php");
-}else{
-    if(isset($_POST['captcha']) && checkCaptcha($_POST['captcha'])){
-        include_once 'config.php';
-        $email=$_POST['adminEmail'];
-        $password=$_POST['adminPassword'];
-        
-        // $query="SELECT * FROM users WHERE email=".$email."AND passoword=".$password."";
-    
-        $query="SELECT * FROM users WHERE email='$email' AND password='$password' ";
-        $stmt=mysqli_stmt_init($conn);
-        $user=mysqli_num_rows(mysqli_query($conn,$query));
-        if($user>=1){
-            if(!mysqli_stmt_prepare($stmt,$query)){
-                // header("Location:../User/login.php");
-                // die();
-            }else{
-        
-                mysqli_stmt_execute($stmt);
-                $result=mysqli_stmt_get_result($stmt);
-                while($row=mysqli_fetch_assoc($result)){;
-                    $_SESSION['USER_NAME']=$row['user_name'];
-                    $_SESSION['ROLE']=$row["role"];
-                    header("Location:../User/admin.php");
-                    die();
-                }
-    
-            }
-        }else{
-            echo "something went wrong";
-        //  echo $user;
-            // header("Location:../User/login.php");
-            // die();
-        }
-    }
-}
+// if (isset($_POST['admin_login'])) {
+//       header("Location:../User/login.php",true,303);
+//       die();
+// } else {
+//     if (isset($_POST['captcha']) && checkCaptcha($_POST['captcha'])) {
+//         include_once 'config.php';
+//         $email = $_POST['adminEmail'];
+//         $password = $_POST['adminPassword'];
 
+//         // $query="SELECT * FROM users WHERE email=".$email."AND passoword=".$password."";
+
+//         $query = "SELECT * FROM users WHERE email=? AND password=? ";
+//         $stmt = mysqli_stmt_init($conn);
+
+//         if (!mysqli_stmt_prepare($stmt, $query)) {
+//             header("Location:../User/login.php",true,303);
+//             die();
+//         } else {
+//             mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+//             mysqli_stmt_execute($stmt);
+//             $result = mysqli_stmt_get_result($stmt);
+//             while ($row = mysqli_fetch_assoc($result)) {;
+//                 $_SESSION['USER_NAME'] = $row['user_name'];
+//                 $_SESSION['ROLE'] = $row["role"];
+//                  header("Location:../User/index.php",true,303);
+//                  die();
+//             }
+//         }
+//         mysqli_stmt_close($stmt);
+//     } else {
+//         header("Location:../User/admin_login.php",true,303);
+//         die();
+//     }
+// }

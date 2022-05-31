@@ -1,4 +1,7 @@
 
+<?php
+include '../Manager/Authentication.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,18 +32,20 @@
                  <div class="card grey lighten-5">
                     <div class="card-content">
                        <span  style='margin-top:30px;'class="card-title center black-text">LOG IN</span>
-                       <form method="post" action="../Manager/Authentication.php">
+                       <form method="post" action="login.php">
                        <div class='form'>                         
                           <div class="row">
                              <div class="input-field col s12">
                                 <input id="email" name="userEmail" type="email">
                                 <label for="email" >Email</label>
+                                <div><?php echo $emailError; ?></div>
                              </div>
                           </div>
                           <div class="row">
                              <div class="input-field col s12">
                                 <input id="password" name="userPassword" type="password">
                                 <label for="password" >Password</label>
+                                <div><?php echo $passwordError; ?></div>
                              </div>
                           </div>
                           <div class="row">
@@ -52,9 +57,13 @@
                                       
                                     </div>
                               </div>
+                              <div><?php echo $captchaError; ?></div>
                            </div>
+
                           <div class="row">
+                              <div><?php echo $generalError; ?></div>
                              <div class="input-field col s12">
+
                              <input type="submit" name="user_login" class="btn" value="log in"> 
                              <div class='link'><a  href="sign-up.php">Don-t have an account? Sign up</a></div>
                            
