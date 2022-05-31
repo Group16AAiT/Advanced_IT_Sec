@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include 'TokenGenerate.php';
 $total_characters_on_image = 6;
 $captcha_code = generate_captcha_string( $total_characters_on_image);

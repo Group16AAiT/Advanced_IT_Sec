@@ -1,8 +1,18 @@
 <?php
+session_start();
 include_once 'config.php';
 include 'TokenGenerate.php';
 include 'error.php';
-
+if(isset($_SESSION["USER_NAME"])){
+    if($_SESSION["ROLE"] == 2){
+        header("Location:../User/admin.php", true, 303);
+        die();
+    }
+    else if($_SESSION["ROLE"] == 1){
+        header("Location:../User/index.php", true, 303);
+        die();
+    }
+}
 if (isset($_POST['Registeruser'])) {
 
     $userName = htmlspecialchars($_POST['userName']);

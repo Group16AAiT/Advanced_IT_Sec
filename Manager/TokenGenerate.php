@@ -1,6 +1,4 @@
 <?php
-session_start();
-
  function get_random_string($length = 60) {
      
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

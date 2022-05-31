@@ -1,7 +1,19 @@
 <?php
+session_start();
 include_once 'config.php';
 include 'TokenGenerate.php';
 include 'error.php';
+ini_set("display_errors",1);
+if(isset($_SESSION["USER_NAME"])){
+    if($_SESSION["ROLE"] == 2){
+        header("Location:../User/admin.php", true, 303);
+        die();
+    }
+    else if($_SESSION["ROLE"] == 1){
+        header("Location:../User/index.php", true, 303);
+        die();
+    }
+}
 if (isset($_POST['user_login'])) {
     $email = htmlspecialchars(($_POST['userEmail']));
     $password = htmlspecialchars(($_POST['userPassword']));
@@ -28,7 +40,7 @@ if (isset($_POST['user_login'])) {
             $result = mysqli_stmt_get_result($stmt);
             $userFound = false;
             while ($row = mysqli_fetch_assoc($result)) {
-                if (password_verify($password, $row['password'])) {
+                if (!password_verify($password, $row['password'])) {
                     echo "here";
                     $_SESSION['USER_NAME'] = $row['user_name'];
                     $_SESSION['ROLE'] = $row["role"];

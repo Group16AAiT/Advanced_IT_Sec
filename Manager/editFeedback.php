@@ -1,8 +1,8 @@
 <?php
+session_start();
 include_once 'config.php';
 include 'tokenGenerate.php';
 
-session_start();
 
 if(isset($_POST['updateFeedback'])){
     if(isset($_POST['updateFeedback']) && checkToken($_POST['token']) && isset($_POST['captcha']) && checkCaptcha($_POST['captcha'])){

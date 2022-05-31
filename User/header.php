@@ -1,6 +1,6 @@
 <?php
-session_start();
 ini_set("display_errors",1);
+session_start();
 if(!isset($_SESSION["USER_NAME"])){
     header("Location:login.php");
 }
