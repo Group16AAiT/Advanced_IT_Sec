@@ -24,7 +24,6 @@ $username = $row['user_name'];
 $email =$row['email'];
 $comment = $row['comment'];
 $filename = $row['file_name'];
-$file = "C:\update/". $filename;
 
 
 ?>
@@ -33,7 +32,8 @@ Name: <input type="text" name="name" value = <?php echo $username?>><br/>
 Email: <input type="email" name="email" value = <?php echo $email?>><br/>
 Comment: <textarea name="comment"><?php echo $comment?></textarea><br/>
 File: <input type="file" accept=".pdf" name="PDFfile"><br/>
-old file: <a href="../Manager/view.php?file=1. ChapterOne.pdf"<?php echo $filename?>><?php echo $filename?></a>
+<?php $ff = "../Manager/view.php?file=".urlencode ($filename); ?>
+old file: <a href=<?php echo $ff?> > <?php echo $filename?></a>
 
 <div class="row">
     <div class="input-field col s12">

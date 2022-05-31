@@ -1,8 +1,7 @@
 <?php
 
-
-$filename =basename(realpath($_GET['file']));
-$file = "C:/uploads/". $filename;
+$temp  = "C:/uploads/".$_GET['file'];
+$filename = "C:/uploads/". basename(realpath($temp));
 
 //$file = "adminLogin.php"; 
     
