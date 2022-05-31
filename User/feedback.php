@@ -7,7 +7,7 @@
 Name: <input type="text" name="name"><br/>
 Email: <input type="email" name="email"><br/>
 Comment: <textarea name="comment" >Enter comment here...</textarea><br/>
-<input type="file" name="PDFfile"><br/>
+<input type="file" accept=".pdf" name="PDFfile"><br/>
 
 <div class="row">
     <div class="input-field col s12">

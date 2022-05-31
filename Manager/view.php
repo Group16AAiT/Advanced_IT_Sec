@@ -1,18 +1,17 @@
 <?php
 
-
-$filename = $_GET['file'];
-$file = "C:/uploads/". $filename;
+$temp  = "C:/uploads/".$_GET['file'];
+$filename = "C:/uploads/". basename(realpath($temp));
 
 //$file = "adminLogin.php"; 
     
 // Header Content Type
- header("Content-type: application/pdf"); 
+ //header("Content-type: application/pdf"); 
   
- header("Content-Length: " . filesize($file)); 
+ //header("Content-Length: " . filesize($file)); 
   
 // Send the file to the browser.
-readfile($file); 
+readfile($filename); 
 
 
 ?>

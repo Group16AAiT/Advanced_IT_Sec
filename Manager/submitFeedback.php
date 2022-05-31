@@ -10,8 +10,23 @@ if(isset($_POST['submitFeedback'])){
         $comment=htmlspecialchars($_POST['comment']);
         $fileName = basename($_FILES['PDFfile']['name']);
 
-        if($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name'])!= "application/pdf") {
-            echo "Only PDFs are allowed!";
+        $filepath = $_FILES['PDFfile']['tmp_name'];
+        $fileSize = filesize($filepath);
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($fileinfo, $filepath);
+
+
+        if($_FILES['PDFfile']['type'] != "application/pdf") {
+            echo "Only PDFs are allowed 1!";
+            exit;
+        }
+        if( mime_content_type($_FILES['PDFfile']['tmp_name'])!= "application/pdf"){
+            echo "Only PDFs are allowed 2!";
+            exit;
+        }
+
+        if($filetype !=  "application/pdf"){
+            echo "the file type is " . $filetype;
             exit;
         }
     
