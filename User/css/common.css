@@ -7,6 +7,10 @@
     
 
   }
+  #c-padding{
+
+    padding:10px;
+  }
 
   #bell{
     color:#007bff;
@@ -15,7 +19,7 @@
     width:30px;
     height:30px;
     text-align: center;
-    padding:1px;
+   
 
   }
 #bell:hover{

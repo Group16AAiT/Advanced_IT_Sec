@@ -2,6 +2,7 @@
 session_start();
 include_once 'config.php';
 include 'tokenGenerate.php';
+include 'error.php';
 
 if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) && checkToken($_POST['token'])) {
     $recaptcha = $_POST['g-recaptcha-response'];
@@ -26,6 +27,30 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
     $email = htmlspecialchars($_POST['email']);
     $comment = htmlspecialchars($_POST['comment']);
     $fileName = basename($_FILES['PDFfile']['name']);
+
+    $query = "SELECT * FROM users WHERE user_name=?";
+        $stmt = mysqli_stmt_init($conn);
+
+        if (!mysqli_stmt_prepare($stmt, $query)) {
+            $generalError =  "Something Went wrong";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $name);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $row = mysqli_fetch_assoc($result);
+
+            if(strcmp($row['email'],$email)!=0){
+                echo 'error 1';
+                exit;
+            }
+        }
+
+
+
+    if(strcmp($name, $_SESSION['USER_NAME'])!=0 || strcmp($name, $_SESSION['USER_NAME'])!=0 ){
+        echo 'error 2';
+        exit;
+    }
 
     $filepath = $_FILES['PDFfile']['tmp_name'];
     $fileSize = filesize($filepath);

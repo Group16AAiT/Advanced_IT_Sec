@@ -5,6 +5,30 @@
     include '../Manager/config.php';
     
     $id = $_GET['id'];
+    $q="SELECT * FROM feedbacks WHERE user_name=?";
+    $s=mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($s,$q);
+    mysqli_stmt_bind_param($s, "s",$_SESSION["USER_NAME"]);
+    mysqli_stmt_execute($s);
+    $feedbacks= mysqli_stmt_get_result($s);
+    $found = false;
+    while($feedback=mysqli_fetch_assoc($feedbacks)){  
+        if($id == $feedback['id']){
+            $found = true;
+        }
+    }
+
+    if(!$found){
+        echo "unauthorized access";
+        exit;
+    }
+
+
+
+
+
+
+
 
     $query="SELECT * FROM feedbacks WHERE id=?";
 
