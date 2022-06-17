@@ -59,18 +59,9 @@ File: <input type="file" accept=".pdf" name="PDFfile"><br/>
 <?php $ff = "../Manager/view.php?file=".urlencode ($filename); ?>
 old file: <a href=<?php echo $ff?> > <?php echo $filename?></a>
 
-<div class="row">
-    <div class="input-field col s12">
-        <div class="input-group">
-            <img src='../Manager/captcha.php' >
-                                      
-                <input required type="text"name="captcha">
-                                      
-        </div>
-    </div>
-</div>
 <input type="hidden" name="id" value="<?php echo $id?>"><br>
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
+<div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
 <button type="submit" name="updateFeedback">Submit Comment</button>
 
 </body>

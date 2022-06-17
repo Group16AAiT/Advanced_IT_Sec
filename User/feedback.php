@@ -53,7 +53,7 @@
 
 
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
-<div class="g-recaptcha" data-sitekey="6Lcy4mggAAAAAMx_CKC_MlzqlENotW7fB3kTag0z"></div> 
+<div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
 <button type="submit" name="submitFeedback">Submit Comment</button>
 </div>
 
