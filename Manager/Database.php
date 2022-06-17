@@ -3,13 +3,14 @@ include 'config.php';
 require_once 'config2.php';
 include 'TokenGenerate.php';
 include 'error.php';
-require_once 'session.php';
+require 'session.php';
+require '../vendor/autoload.php';
 class DatabaseClass
 {
     public function userLogin($email,$password)
     {
         include 'config.php';
-        $sessionClass = new sessionClass();
+        $sessionClass = new SessionClass();
         $sessionClass->authenticationwithoutRedirectCheck();
         $query = "SELECT * FROM users WHERE email=?";
         $stmt = mysqli_stmt_init($conn);
@@ -24,9 +25,9 @@ class DatabaseClass
             while ($row = mysqli_fetch_assoc($result)) {
                 if (password_verify($password, $row['password'])) {
                     $sessionClass->setUser( $row['user_name'],$row["role"]);
-                  
+                    echo $_SESSION['ROLE']; 
                     $userFound = true;
-                    if ($row['ban'] == true) {               
+                    if ($row['ban'] == true) {              
                         return  "Your account has been banned";
                     } else {
 
@@ -94,16 +95,48 @@ class DatabaseClass
     }
     public function registerUser($userName,$email,$password)
     {
+        $sessionClass = new SessionClass();
+        $sessionClass->authenticationwithoutRedirectCheck();
+        $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
+         $secret = json_encode ($g->generateSecret());
         include 'config.php';
-        $query = "INSERT INTO users(user_name,email,password) VALUES (?,?,?);";
+        $query = "INSERT INTO users(user_name,email,password,authenticator) VALUES (?,?,?,?);";
+        
         $newPassword = password_hash($password,  PASSWORD_DEFAULT);
         $stmt = mysqli_stmt_init($conn);
         mysqli_stmt_prepare($stmt, $query);
-        mysqli_stmt_bind_param($stmt, "sss", $userName, $email,  $newPassword );
-        mysqli_stmt_execute($stmt);
-        $_SESSION['USER_NAME'] = $userName;
-        header("Location:".BASE_URL."User/login.php", true, 303);
+        mysqli_stmt_bind_param($stmt, "ssss", $userName, $email,  $newPassword, $secret);
+
+        if(mysqli_stmt_execute($stmt)){
+        $sessionClass->setUser($userName,1);
+
+        header("Location:".BASE_URL."User/2FASignup.php", true, 303);
         exit();
+        }
     }
 
+    public function getUser($userName)
+    {
+        include 'config.php';
+        $query = "SELECT * FROM users WHERE user_name=? ";
+        $stmt = mysqli_stmt_init($conn);
+
+        if (!mysqli_stmt_prepare($stmt, $query)) {
+            $generalError =  "Something Went wrong";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $userName);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $userFound = false;
+            while ($row = mysqli_fetch_assoc($result)) {;
+                return $row['authenticator'];
+          
+            }
+
+            
+        }
+        mysqli_stmt_close($stmt);
+        return "";
+
+    }
 }

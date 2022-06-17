@@ -1,8 +1,9 @@
 <?php
 require_once 'Database.php';
+$sessionClass = new SessionClass();
 
+$sessionClass->authenticationwithoutRedirectCheck();
 $databaseClass = new DatabaseClass();
-
 
 ini_set("display_errors",1);
 if (isset($_POST['user_login'])) {

@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 require '../vendor/autoload.php';
+
 require_once '../Manager/Database.php';
 
 $databaseClass = new DatabaseClass();
 $sessionClass = new SessionClass();
 
-// $secret = "XVQ2UMGO75XRUKJO";
-$secret =json_decode( $databaseClass->getUser($_SESSION["USER_NAME"]));
-// $secret = $g->generateSecret();
+$secret = json_decode( $databaseClass->getUser($_SESSION["USER_NAME"]));
+$link = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate('Group16', $secret, 'Advanced-IT-Sec-project');
 if (isset($_POST["user_2fa_next"])) {
     $code = $_POST['usercode'];
     $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
@@ -22,7 +22,7 @@ if (isset($_POST["user_2fa_next"])) {
         echo 'Incorrect or expired code!';
     }
 }
-
+echo "<div class ='img-2fa'><img src=" . $link . "></div>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,8 +42,8 @@ if (isset($_POST["user_2fa_next"])) {
 
 <body>
 
-        <div class="content-2fa-login">
-            <form method="post" action="2FA.php">
+        <div class="content-2fa">
+            <form method="post" action="2FASignup.php">
                 <div >
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos numquam dolorem cumque reiciendis! Reprehenderit est minima delectus porro, quod sit, quidem laborum mollitia eligendi earum, nisi esse ut officiis. Mollitia!
                 </div>
