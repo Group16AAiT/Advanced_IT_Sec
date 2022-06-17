@@ -1,21 +1,24 @@
-nav{
 
-   background: white;
-   box-shadow: none !important;
-
-
-
+.feedback-wrapper{
+   margin-left: 3% ;
+   margin-right: 20%;
+   margin-top: 3%;
+   width: 75%;
 }
-.log{
-   
-   background: #16222A;  /* fallback for old browsers */
-   background: -webkit-linear-gradient(to right, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
-   background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-   
-   
-
+.user-wrapper{
+   margin-left: 5% ;
+   margin-right: 5%; 
+   margin-top: 3%;
 }
-
+td{
+   padding-left: 4% !important;
+}
+th{
+   padding-left: 4% !important;
+}
+.entry{
+   padding-top: 4%;
+}
 /* .carousel{
 
 position: absolute;

@@ -3,9 +3,7 @@
 
 ?>
     
-    
-   
-    <div class="wrapper">
+  <div class="feedback-wrapper">
 
 
 <?php
@@ -28,29 +26,29 @@ $query="SELECT * FROM feedbacks ORDER BY id DESC";
       
 echo'
 
-<div class="card request">
-<div class="card-content invoice-print-area">
+<div class="card ">
+<div class="card-content ">
   <!-- header section -->
-  
+  <div class="invoice-address">
+        <h5>'.$name.'</h5>
+      </div>
   <!-- logo and title -->
-  <div class="row mt-3 invoice-logo-title">
+  <div class="row mt-3 ">
     <div class="col m6 s12 pull-m6">
       <h6 class="indigo-text invoice-number mr-1">comment# '.$count.'</h6>
 
     </div>
   </div>
-  <div class="divider mb-3 mt-3"></div>
+  <div class="divider mb-3 mt-3 pink darken-4"></div>
   <!-- invoice address and contact -->
   <div class="row invoice-info">
     <div class="col m4 l4 s6">
     
-      <div class="invoice-address">
-        <span>'.$name.'</span>
-      </div>
-      <div class="invoice-address">
-        <span>'.$email.'</span>
-      </div>
-      <div class="invoice-address">
+      
+    <!-- <div >-->
+    <!--   <span>'.$email.'</span>-->
+    <!-- </div>-->
+      <div >
         <span>'.$comment.'</span>
       </div>
     </div>

@@ -1,13 +1,6 @@
 <?php
 
-session_start();
-
-if(isset($_SESSION["USER_NAME"])){
-    unset($_SESSION["USER_NAME"]);
-}
-if(isset($_SESSION["ROLE"])){
-    unset($_SESSION["ROLE"]);
-}
-session_destroy();
-header("Location: login.php");
-die();
+require_once "../Manager/session.php";
+ini_set("display_errors",1);
+$sessionClass = new sessionClass();
+$sessionClass->destorySession();

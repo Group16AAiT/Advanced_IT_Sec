@@ -9,17 +9,9 @@ Email: <input type="email" name="email"><br/>
 Comment: <textarea name="comment" >Enter comment here...</textarea><br/>
 <input type="file" accept=".pdf" name="PDFfile"><br/>
 
-<div class="row">
-    <div class="input-field col s12">
-        <div class="input-group">
-            <img src='../Manager/captcha.php' >
-                                      
-                <input required type="text"name="captcha">
-                                      
-        </div>
-    </div>
-</div>
+
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
+<div class="g-recaptcha" data-sitekey="6Lcy4mggAAAAAMx_CKC_MlzqlENotW7fB3kTag0z"></div> 
 <button type="submit" name="submitFeedback">Submit Comment</button>
 
 </body>

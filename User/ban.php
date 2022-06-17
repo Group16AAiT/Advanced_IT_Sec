@@ -6,7 +6,7 @@ include '../Manager/TokenGenerate.php';
 
 
 
-<div class="wrapper">
+<div class="user-wrapper">
 
 
     <?php
@@ -21,7 +21,30 @@ include '../Manager/TokenGenerate.php';
         mysqli_stmt_execute($mine);
         $count = 0;
         $result = mysqli_stmt_get_result($mine);
-        $count = 1;
+        $count++;
+        if ($count == 1) {
+            echo ' 
+    
+  <div  class="card grey-text">
+  <div class="table-card ">
+      <table class=" responsive-table ">
+      <thead>
+        <tr id="car-table">
+     
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+        </tr>
+  
+  
+  
+  
+  
+    
+      </thead>';
+        }
+
         while ($row = mysqli_fetch_assoc($result)) {
             $id = $row['ID'];
             $name = $row['user_name'];
@@ -30,46 +53,44 @@ include '../Manager/TokenGenerate.php';
 
                 echo '
 
-            <div class="card request">
-            <div class="card-content invoice-print-area">
-            <!-- header section -->
-            
-            <!-- logo and title -->
-            <div class="row mt-3 invoice-logo-title">
-                <div class="col m6 s12 pull-m6">
-                <h6 class="indigo-text invoice-number mr-1">comment# ' . $count . '</h6>
-
-                </div>
-            </div>
-            <div class="divider mb-3 mt-3"></div>
-            <div class="row invoice-info">
-                <div class="col m4 l4 s6">
+                <tbody >
+    
+                <tr>
                 
-                <div class="invoice-address">
-                    <span>' . $name . '</span>
-                </div>
-                <div class="invoice-address">
-                    <span>' . $email . '</span>
-                </div>
-                </div>
+    
+                <td class ="entry">' . $name . '</td>
+            
+                <td class ="entry">' . $email . '</td>
+
+                <td class ="entry">
+                ';
+                if($row['ban']==false){
+                     echo  '<span class="chip lighten-5 green green-text">Available</span>';
+                }else{
+                    echo'<span class="chip lighten-5 red red-text">Banned</span>';
+                }
+              echo  '
+                  </td>
+                <td >
                 <form method="post" action="../Manager/banHandler.php">
-                <input type="hidden" name="user_id" value='.$id.'><br>
-                <input type="hidden" name="token" value='.$token.'><br>
+                <input type="hidden" name="user_id" value=' . $id . '><br>
+                <input type="hidden" name="token" value=' . $token . '><br>
                 ';
                 if ($row['ban'] == true) {
 
-                    echo ' <button class="btn waves-effect waves-light" type="submit" name="unban">unban</button>
+                    echo ' <button class="btn waves-effect waves-light pink darken-4" type="submit" name="unban">unban</button>
                 ';
                 } else {
-                    echo ' <button  class="btn waves-effect waves-light" type="submit" name="ban">ban</button>';
+                    echo ' <button  class="btn waves-effect waves-light pink darken-4" type="submit" name="ban">ban</button>';
                 }
 
 
-                echo '   </form>
-            </div>
-            </div>
-            </div>
-            <hr>
+                echo ' 
+                <input type="hidden" name="user_id" value=' . $id . '><br>
+                <input type="hidden" name="token" value=' . $token . '><br>
+                </form>
+                </td>
+                </tr>
             ';
                 $count++;
             }
@@ -80,13 +101,13 @@ include '../Manager/TokenGenerate.php';
     }
     ?>
 
-
-    <div class="col xl9 m8 s12">
-
-    </div>
 </div>
 
 </body>
+
+<script src="jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 
 <script src="jquery-3.4.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -98,3 +119,5 @@ include '../Manager/TokenGenerate.php';
 </body>
 
 </html>
+
+

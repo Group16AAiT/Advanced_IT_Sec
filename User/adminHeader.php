@@ -1,16 +1,8 @@
 <?php
-session_start();
 ini_set("display_errors",1);
-if(!isset($_SESSION["USER_NAME"])){
-    header("Location:login.php");
-    die();
-}
-else{
-    if($_SESSION["ROLE"] != 2){
-        header("Location:index.php");
-    }
-
-}
+include "../Manager/session.php";
+$sessionClass = new sessionClass();
+$sessionClass->adminAuthenticationwithRedirectCheck();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,11 +10,14 @@ else{
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <title>Document</title>
 </head>
 <body>
     <header>
-        <nav>
+        <nav class =" pink darken-4">
             <ul>
                 <li><a href="ban.php">Users</a></li>
                 <li><a href="userFeedback.php">User Feedbacks</a></li>

@@ -16,14 +16,9 @@ include '../Manager/Authentication.php';
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/common.css">
 <link rel="stylesheet" href="css/sign-up.css">
+
 </head>
 <body>
-    
-
-
-
-
-
 <div  class=" valign-wrapper log" style="width:100%;height:100%;position: absolute;">
     <div class="valign log" style="width:100%;">
         <div class="container">
@@ -33,6 +28,8 @@ include '../Manager/Authentication.php';
                     <div class="card-content">
                        <span  style='margin-top:30px;'class="card-title center black-text">LOG IN</span>
                        <form method="post" action="login.php">
+               
+                      
                        <div class='form'>                         
                           <div class="row">
                              <div class="input-field col s12">
@@ -48,17 +45,6 @@ include '../Manager/Authentication.php';
                                 <div><?php echo $passwordError; ?></div>
                              </div>
                           </div>
-                          <div class="row">
-                              <div class="input-field col s12">
-                                 <div class="input-group">
-                                       <img src='../Manager/captcha.php' >
-                                      
-                                       <input required type="text"name="captcha">
-                                      
-                                    </div>
-                              </div>
-                              <div><?php echo $captchaError; ?></div>
-                           </div>
 
                           <div class="row">
                               <div><?php echo $generalError; ?></div>

@@ -1,15 +1,7 @@
 <?php
-ini_set("display_errors",1);
-session_start();
-if(!isset($_SESSION["USER_NAME"])){
-    header("Location:login.php");
-}
-else{
-    if($_SESSION["ROLE"] == 2){
-        header("Location:admin.php");
-    }
-
-}
+include "../Manager/session.php";
+$sessionClass = new sessionClass();
+$sessionClass->userAuthenticationwithRedirectCheck();
 ?>
 <html lang="en">
 
@@ -25,6 +17,7 @@ else{
    <link rel="stylesheet" href="css/style.css">
    <link rel="stylesheet" href="css/common.css">
    <link rel="stylesheet" href="css/sign-up.css">
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <header>
@@ -33,8 +26,6 @@ else{
                 <li><a href="">Home</a></li>
                 <li><a href="feedback.php">Feedback</a></li>
                 <li><a href="review.php">View Review</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="sign-up.php">Signup</a></li>    
                 <li><a href="logout.php">logout</a></li>  
             </ul>
             
