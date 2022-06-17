@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'config2.php';
-class sessionClass
+class SessionClass
 {
     public function userAuthenticationwithRedirectCheck()
     {
@@ -41,7 +41,7 @@ class sessionClass
     public function authenticationwithoutRedirectCheck()
     {
         if (isset($_SESSION["USER_NAME"])) {
-            if (!isset($_SESSION['code'])) {
+            if (!isset($_SESSION['CODE'])) {
                 header("Location:".BASE_URL."User/2FA.php", true, 303);
                 exit();
             } else 
