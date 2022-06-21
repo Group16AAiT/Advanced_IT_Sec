@@ -63,6 +63,11 @@ if (isset($_POST["user_2fa_next"])) {
                             <input type="submit" name="user_2fa_next" class="btn  pink darken-4 btn-2fa" value="Next">
 
                         </div>
+                        <div class="input-field col s12">
+
+                            
+                            <a href="logout.php">Back to login</a>  
+                        </div>
 
 
                     </div>
