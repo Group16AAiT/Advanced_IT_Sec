@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 include_once 'config.php';
 include 'tokenGenerate.php';
 include 'error.php';
@@ -23,6 +23,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         header("Location:../User/Error.php");
         exit;
     }
+    $checker = true;
     $name = htmlspecialchars($_POST['name']);
     $email = htmlspecialchars($_POST['email']);
     $comment = htmlspecialchars($_POST['comment']);
@@ -30,7 +31,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
 
     $query = "SELECT * FROM users WHERE user_name=?";
         $stmt = mysqli_stmt_init($conn);
-
+        $row=null;
         if (!mysqli_stmt_prepare($stmt, $query)) {
             $generalError =  "Something Went wrong";
         } else {
@@ -39,17 +40,17 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
             $result = mysqli_stmt_get_result($stmt);
             $row = mysqli_fetch_assoc($result);
 
-            if(strcmp($row['email'],$email)!=0){
-                echo 'error 1';
-                exit;
-            }
         }
 
 
 
-    if(strcmp($name, $_SESSION['USER_NAME'])!=0 || strcmp($name, $_SESSION['USER_NAME'])!=0 ){
-        echo 'error 2';
-        exit;
+    if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
+        $userNameError ="problem";
+        $checker = false;
+    }
+    if(strcmp($row['email'],$email)!=0){
+        $emailError ="problem2";
+        $checker = false;
     }
 
     $filepath = $_FILES['PDFfile']['tmp_name'];
@@ -58,37 +59,34 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
     $filetype = finfo_file($fileinfo, $filepath);
 
 
-    if ($_FILES['PDFfile']['type'] != "application/pdf") {
-        echo "Only PDFs are allowed 1!";
-        exit;
-    }
-    if (mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf") {
-        echo "Only PDFs are allowed 2!";
-        exit;
-    }
-
-    if ($filetype !=  "application/pdf") {
-        echo "the file type is " . $filetype;
-        exit;
+    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
+        $fileError ="problem3";
+        $checker = false;
     }
 
     $uploaddir = 'C:\uploads/';
 
     $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
 
-    if (move_uploaded_file($_FILES['PDFfile']['tmp_name'], $uploadfile)) {
-        echo "PDF succesfully uploaded.";
-    } else {
-        echo "PDF uploading failed.";
-        exit;
+    if($checker){
+
+        if (move_uploaded_file($_FILES['PDFfile']['tmp_name'], $uploadfile)) {
+            echo "PDF succesfully uploaded.";
+        } else {
+            echo "PDF uploading failed.";
+            exit;
+        }
+    
+        $query = "INSERT INTO feedbacks(user_name,email,comment,file_name) VALUES (?,?,?,?);";
+        $stmt = mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $query);
+        mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $fileName);
+        mysqli_stmt_execute($stmt);
+        header("Location:../User/review.php");
+
     }
 
-    $query = "INSERT INTO feedbacks(user_name,email,comment,file_name) VALUES (?,?,?,?);";
-    $stmt = mysqli_stmt_init($conn);
-    mysqli_stmt_prepare($stmt, $query);
-    mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $fileName);
-    mysqli_stmt_execute($stmt);
-    header("Location:../User/review.php");
+
 } else {
     header("Location:../User/Error.php");
 }
