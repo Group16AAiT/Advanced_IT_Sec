@@ -1,12 +1,13 @@
 <?php
 //session_start();
 include_once 'config.php';
+include_once 'config2.php';
 include 'tokenGenerate.php';
 include 'error.php';
 
 if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) && checkToken($_POST['token'])) {
     $recaptcha = $_POST['g-recaptcha-response'];
-    $secret_key = "6Lcy4mggAAAAAEAM3VWkkyFw6JIIbzKLjpYCZGNX";
+    $secret_key = CAPTCHA_SECRET_KEY;
     $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
         . $secret_key . '&response=' . $recaptcha;
     $response = file_get_contents($url);
@@ -31,14 +32,17 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
 
     $query = "SELECT * FROM users WHERE user_name=?";
         $stmt = mysqli_stmt_init($conn);
-        $row=null;
         if (!mysqli_stmt_prepare($stmt, $query)) {
             $generalError =  "Something Went wrong";
         } else {
-            mysqli_stmt_bind_param($stmt, "s", $name);
+            mysqli_stmt_bind_param($stmt, "s", $_SESSION['USER_NAME']);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             $row = mysqli_fetch_assoc($result);
+            if(strcmp($row['email'],$email)!=0){
+                $emailError ="problem2";
+                $checker = false;
+            }
 
         }
 
@@ -48,10 +52,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         $userNameError ="problem";
         $checker = false;
     }
-    if(strcmp($row['email'],$email)!=0){
-        $emailError ="problem2";
-        $checker = false;
-    }
+
 
     $filepath = $_FILES['PDFfile']['tmp_name'];
     $fileSize = filesize($filepath);
@@ -88,5 +89,5 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
 
 
 } else {
-    header("Location:../User/Error.php");
+  //  header("Location:../User/Error.php");
 }

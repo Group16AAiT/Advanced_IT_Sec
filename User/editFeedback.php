@@ -1,8 +1,8 @@
 <?php
 
     include 'header.php';
-    include '../Manager/TokenGenerate.php';
     include '../Manager/config.php';
+
     
     $id = $_GET['id'];
     $q="SELECT * FROM feedbacks WHERE user_name=?";
@@ -23,9 +23,7 @@
         exit;
     }
 
-
-
-
+     include '../Manager/editFeedback.php';
 
 
 
@@ -51,26 +49,20 @@ $filename = $row['file_name'];
 
 
 ?>
-<form action="../Manager/editFeedback.php" method="post" id="feedbackForm" enctype="multipart/form-data">
-Name: <input type="text" name="name" value = <?php echo $username?>><br/>
-Email: <input type="email" name="email" value = <?php echo $email?>><br/>
-Comment: <textarea name="comment"><?php echo $comment?></textarea><br/>
+<form action="editFeedback.php?id=<?php echo $id?>" method="post" id="feedbackForm" enctype="multipart/form-data">
+Name: <input type="text" name="name" value = <?php echo htmlspecialchars($username)?>><br/>
+<div><?php echo $userNameError; ?></div>
+Email: <input type="email" name="email" value = <?php echo htmlspecialchars($email)?>><br/>
+<div><?php echo $emailError; ?></div>
+Comment: <textarea name="comment"><?php echo htmlspecialchars($comment)?></textarea><br/>
 File: <input type="file" accept=".pdf" name="PDFfile"><br/>
+<div><?php echo $fileError; ?></div>
 <?php $ff = "../Manager/view.php?file=".urlencode ($filename); ?>
 old file: <a href=<?php echo $ff?> > <?php echo $filename?></a>
 
-<div class="row">
-    <div class="input-field col s12">
-        <div class="input-group">
-            <img src='../Manager/captcha.php' >
-                                      
-                <input required type="text"name="captcha">
-                                      
-        </div>
-    </div>
-</div>
 <input type="hidden" name="id" value="<?php echo $id?>"><br>
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
+<div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
 <button type="submit" name="updateFeedback">Submit Comment</button>
 
 </body>
