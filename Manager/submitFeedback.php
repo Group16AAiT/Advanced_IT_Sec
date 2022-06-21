@@ -49,7 +49,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
 
 
     if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
-        $userNameError ="problem";
+        $userNameError ="Invalid username";
         $checker = false;
     }
     if (!isset($_FILES['PDFfile'])) {
@@ -63,11 +63,11 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         $filetype = finfo_file($fileinfo, $filepath);
     
         if ($fileSize > 5242880) { 
-            $fileError ="problem3";
+            $fileError ="File cannot be more than 5MB";
             $checker = false;
          }
         if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
-            $fileError ="problem3";
+            $fileError ="File can only be pdf";
             $checker = false;
         }
     

@@ -37,13 +37,13 @@ include 'error.php';
                     $result = mysqli_stmt_get_result($stmt);
                     $row = mysqli_fetch_assoc($result);
                     if(strcmp($row['email'],$email)!=0){
-                        $emailError ="problem2";
+                        $emailError ="Email is not correct";
                         $checker = false;
                     }
 
                 }
                 if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
-                    $userNameError ="problem";
+                    $userNameError ="Username is not correct";
                     $checker = false;
                 }
 if(isset($_FILES['PDFfile'])){
@@ -56,7 +56,7 @@ if(isset($_FILES['PDFfile'])){
 
 
     if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
-        $fileError ="problem3";
+        $fileError ="File can only be PDF";
         $checker = false;
     }
     $uploaddir = 'C:\uploads/';
