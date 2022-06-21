@@ -52,29 +52,38 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         $userNameError ="problem";
         $checker = false;
     }
-
-
-    $filepath = $_FILES['PDFfile']['tmp_name'];
-    $fileSize = filesize($filepath);
-    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-    $filetype = finfo_file($fileinfo, $filepath);
-
-    if ($fileSize > 5242880) { // 3 MB (1 byte * 1024 * 1024 * 3 (for 3 MB))
-        $fileError ="problem3";
+    if (!isset($_FILES['PDFfile'])) {
+        $fileError ="File is not set";
         $checker = false;
-     }
-    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
-        $fileError ="problem3";
-        $checker = false;
+    }else{
+
+        $filepath = $_FILES['PDFfile']['tmp_name'];
+        $fileSize = filesize($filepath);
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($fileinfo, $filepath);
+    
+        if ($fileSize > 5242880) { 
+            $fileError ="problem3";
+            $checker = false;
+         }
+        if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
+            $fileError ="problem3";
+            $checker = false;
+        }
+    
+
+
     }
 
+  
     $uploaddir = 'C:\uploads/';
 
     $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
 
     if($checker){
+        $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']) . $_SESSION['USER_NAME']).'.pdf';
 
-        if (move_uploaded_file($_FILES['PDFfile']['tmp_name'], $uploadfile)) {
+        if (move_uploaded_file($_FILES['PDFfile']['tmp_name'],  $uploaddir . $newfilename)) {
             echo "PDF succesfully uploaded.";
         } else {
             echo "PDF uploading failed.";
@@ -84,7 +93,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         $query = "INSERT INTO feedbacks(user_name,email,comment,file_name) VALUES (?,?,?,?);";
         $stmt = mysqli_stmt_init($conn);
         mysqli_stmt_prepare($stmt, $query);
-        mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $fileName);
+        mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $newfilename);
         mysqli_stmt_execute($stmt);
         header("Location:../User/review.php");
 

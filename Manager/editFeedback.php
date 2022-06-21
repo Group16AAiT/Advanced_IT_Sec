@@ -25,7 +25,6 @@ include 'error.php';
                 $email = $_POST['email'];
                 $comment = $_POST['comment'];
                 $id = $_POST['id'];
-                $fileName = basename($_FILES['PDFfile']['name']);
 
 
                 $query = "SELECT * FROM users WHERE user_name=?";
@@ -47,39 +46,53 @@ include 'error.php';
                     $userNameError ="problem";
                     $checker = false;
                 }
+if(isset($_FILES['PDFfile'])){
+
+    $fileName = basename($_FILES['PDFfile']['name']);
+    $filepath = $_FILES['PDFfile']['tmp_name'];
+    $fileSize = filesize($filepath);
+    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+    $filetype = finfo_file($fileinfo, $filepath);
 
 
-                $filepath = $_FILES['PDFfile']['tmp_name'];
-                $fileSize = filesize($filepath);
-                $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-                $filetype = finfo_file($fileinfo, $filepath);
+    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
+        $fileError ="problem3";
+        $checker = false;
+    }
+    $uploaddir = 'C:\uploads/';
 
+    $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
 
-                if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
-                    $fileError ="problem3";
-                    $checker = false;
-                }
-
-
-
-                $uploaddir = 'C:\uploads/';
-
-                $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+}
+             
+              
 
                 if($checker){
+                    if(isset($_FILES['PDFfile'])){
+                        $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']). $_SESSION['USER_NAME']).'pdf';
 
-                    
-                    if (move_uploaded_file($_FILES['PDFfile']['tmp_name'], $uploadfile)) {
-                        echo "PDF succesfully uploaded.";
-                    } else {
-                        echo "PDF uploading failed.";
-                        exit;
+
+                        if (move_uploaded_file($_FILES['PDFfile']['tmp_name'],  $uploaddir . $newfilename)) {
+                            echo "PDF succesfully uploaded.";
+                        } else {
+                            echo "PDF uploading failed.";
+                            exit;
+                        }
+                        $query = "UPDATE feedbacks SET user_name=?,email=?,comment=?,file_name=? WHERE id=?;";
+                        $stmt = mysqli_stmt_init($conn);
+                        mysqli_stmt_prepare($stmt, $query);
+                        mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $comment, $newfilename, $id);
                     }
-
-                    $query = "UPDATE feedbacks SET user_name=?,email=?,comment=?,file_name=? WHERE id=?;";
+                    else{
+                        
+                    $query = "UPDATE feedbacks SET user_name=?,email=?,comment=? WHERE id=?;";
                     $stmt = mysqli_stmt_init($conn);
                     mysqli_stmt_prepare($stmt, $query);
-                    mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $comment, $fileName, $id);
+                    mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $comment, $id);
+
+                    }
+                
+
                     mysqli_stmt_execute($stmt);
                     header("Location:../User/review.php");
 
