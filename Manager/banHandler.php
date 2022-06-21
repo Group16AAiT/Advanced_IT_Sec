@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once 'config.php';
-include 'tokenGenerate.php';
+require_once 'config.php';
+require_once 'TokenGenerate.php';
 
 if (isset($_POST['ban'])  && checkToken($_POST['token'])) {
     echo $_POST['user_id'];

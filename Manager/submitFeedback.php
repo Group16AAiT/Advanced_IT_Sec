@@ -1,13 +1,13 @@
 <?php
 //session_start();
-include_once 'config.php';
-include_once 'config2.php';
-include 'tokenGenerate.php';
-include 'error.php';
+require_once 'config.php';
+include_once 'Access.php';
+require_once 'TokenGenerate.php';
+require_once 'Error.php';
 
 if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) && checkToken($_POST['token'])) {
     $recaptcha = $_POST['g-recaptcha-response'];
-    $secret_key = CAPTCHA_SECRET_KEY;
+    $secret_key = $CAPTCHA_SECRET_KEY;
     $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
         . $secret_key . '&response=' . $recaptcha;
     $response = file_get_contents($url);

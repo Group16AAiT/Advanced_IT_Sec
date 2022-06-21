@@ -1,5 +1,6 @@
 <?php
-require_once 'Validation.php';
+require 'Access.php';
+require 'Validation.php';
 $sessionClass = new SessionClass();
 
 $sessionClass->authenticationwithoutRedirectCheck();
@@ -13,7 +14,7 @@ if (isset($_POST['user_login'])) {
         if (isset($_POST['g-recaptcha-response'])) {
 
             $recaptcha = $_POST['g-recaptcha-response'];
-            $secret_key = CAPTCHA_SECRET_KEY;
+            $secret_key = $CAPTCHA_SECRET_KEY;
             $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
                 . $secret_key . '&response=' . $recaptcha;
             $response = file_get_contents($url);

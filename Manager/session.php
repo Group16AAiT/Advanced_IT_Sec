@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config2.php';
+require_once 'Access.php';
 class SessionClass
 {
     public function userAuthenticationwithRedirectCheck()

@@ -55,7 +55,7 @@
 
 
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
-<div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
+<div class="g-recaptcha" data-sitekey=<?=$CAPTCHA_SECRET_SITE?>></div> 
 
 <button class="btn waves-effect waves-light" type="submit" name="submitFeedback">Submit Comment</button>
 </div>
