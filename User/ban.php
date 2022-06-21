@@ -69,21 +69,9 @@ include '../Manager/TokenGenerate.php';
                 }else{
                     echo'<span class="chip lighten-5 red red-text">Banned</span>';
                 }
-
               echo  '
                   </td>
-                <td > 
-                <form method="post" action="honeypot.php">
-                <p hidden> Make it an admin
-                <input type="checkbox" value="valueofcheckbox" name="checkbox_name"/>
-                <input type="hidden" name="token"  value=' . $token . '>>
-                <input type="submit"  value="Admin">
-                </p>
-               
-                
-              </form>
-                
-
+                <td >
                 <form method="post" action="../Manager/banHandler.php">
                 <input type="hidden" name="user_id" value=' . $id . '><br>
                 <input type="hidden" name="token" value=' . $token . '><br>
@@ -117,8 +105,6 @@ include '../Manager/TokenGenerate.php';
 
 </body>
 
- 
-
 <script src="jquery-3.4.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -133,5 +119,3 @@ include '../Manager/TokenGenerate.php';
 </body>
 
 </html>
-
-

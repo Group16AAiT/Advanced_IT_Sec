@@ -12,12 +12,12 @@ if (isset($_POST['ban'])  && checkToken($_POST['token'])) {
     mysqli_stmt_prepare($stmt,$query);
     mysqli_stmt_bind_param($stmt,"i",$id);
     mysqli_stmt_execute($stmt);
-    header("Location:../User/ban.php"); 
+    header("Location:" . BASE_URL . "User/ban.php", true, 303);
+    exit();
     die();
 } else {
-    echo "nothing";
-    // header("Location:../sign-up.php?status=unsuccessful"); 
-    //    header("Location:../User/feedback.php"); 
+    header("Location:" . BASE_URL . "User/Error.php", true, 303);
+    exit(); 
 }
 
 if (isset($_POST['unban'])  && checkToken($_POST['token'])) {
@@ -28,10 +28,10 @@ if (isset($_POST['unban'])  && checkToken($_POST['token'])) {
     mysqli_stmt_prepare($stmt,$query);
     mysqli_stmt_bind_param($stmt,"i",$id);
     mysqli_stmt_execute($stmt);
-    header("Location:../User/ban.php"); 
-    die();
+    header("Location:" . BASE_URL . "User/ban.php", true, 303);
+    exit();
 } else {
     echo "nothing";
-    // header("Location:../sign-up.php?status=unsuccessful"); 
-    //    header("Location:../User/feedback.php"); 
+    header("Location:" . BASE_URL . "User/Error.php", true, 303);
+    exit();
 }

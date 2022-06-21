@@ -19,10 +19,10 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
 
     // Checking, if response is true or not
     if ($response->success == true) {
-        echo '<script>alert("Google reCAPTACHA verified")</script>';
+       
     } else {
-        header("Location:../User/Error.php");
-        exit;
+        header("Location:" . BASE_URL . "User/Error.php", true, 303);
+        exit();
     }
     $checker = true;
     $name = $_POST['name'];
@@ -86,7 +86,8 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         mysqli_stmt_prepare($stmt, $query);
         mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $fileName);
         mysqli_stmt_execute($stmt);
-        header("Location:../User/review.php");
+        header("Location:" . BASE_URL . "User/review.php", true, 303);
+        exit();
 
     }
 
