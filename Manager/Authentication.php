@@ -1,50 +1,46 @@
 <?php
-require_once 'Database.php';
+require_once 'Validation.php';
 $sessionClass = new SessionClass();
 
 $sessionClass->authenticationwithoutRedirectCheck();
 $databaseClass = new DatabaseClass();
+$validateClass = new ValidationClass();
 
 ini_set("display_errors", 1);
-if (isset($_POST['user_login']) && checkToken($_POST['token'])) {
-    if (isset($_POST['g-recaptcha-response'])) {
+if (isset($_POST['user_login'])) {
 
-        $recaptcha = $_POST['g-recaptcha-response'];
-        $secret_key = CAPTCHA_SECRET_KEY;
-        $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
-            . $secret_key . '&response=' . $recaptcha;
-        $response = file_get_contents($url);
+    if (checkToken($_POST['token'])) {
+        if (isset($_POST['g-recaptcha-response'])) {
 
-        // Response return by google is in
-        // JSON format, so we have to parse
-        // that json
-        $response = json_decode($response);
+            $recaptcha = $_POST['g-recaptcha-response'];
+            $secret_key = CAPTCHA_SECRET_KEY;
+            $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
+                . $secret_key . '&response=' . $recaptcha;
+            $response = file_get_contents($url);
 
-        // Checking, if response is true or not
-        if ($response->success == true) {
-            $email = htmlspecialchars(($_POST['userEmail']));
-            $password = htmlspecialchars(($_POST['userPassword']));
+            // Response return by google is in
+            // JSON format, so we have to parse
+            // that json
+            $response = json_decode($response);
 
-            if (empty($email)) {
-                $emailError =  "Email is required";
-            }
-            if (empty($password)) {
-                $passwordError =  "Password is required";
-            }
-            if ((empty($emailError) &&  empty($passwordError))) {
+            // Checking, if response is true or not
+            if ($response->success == true) {
+                $email = htmlspecialchars(($_POST['userEmail']));
+                $password = htmlspecialchars(($_POST['userPassword']));
+                $emailError = $validateClass->emailLoginCheck($email);
+                $passwordError = $validateClass->passwordLoginCheck($password);
 
-
-                // $query="SELECT * FROM users WHERE email=".$email."AND passoword=".$password."";
-
-                $generalError = $databaseClass->userLogin($email, $password);
+                if ((empty($emailError) &&  empty($passwordError))) {
+                    $generalError = $databaseClass->userLogin($email, $password);
+                } 
             } else {
-                $captchaError = "Something went Wrong";
+                $captchaError = "Invalid captcha";
             }
+        } else {
+            $captchaError = "Invalid captcha";
         }
     } else {
-        $captchaError = "Something went Wrong";
+        header("Location:" . BASE_URL . "User/Error.php", true, 303);
+        exit();
     }
-} else {
-    header("Location:" . BASE_URL . "User/Error.php", true, 303);
-    exit();
 }
