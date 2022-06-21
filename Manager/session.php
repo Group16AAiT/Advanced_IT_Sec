@@ -6,7 +6,7 @@ class SessionClass
     public function userAuthenticationwithRedirectCheck()
     {
         if (!isset($_SESSION["USER_NAME"])) {
-            header("Location:".BASE_URL."User/index.php", true, 303);
+            header("Location:".BASE_URL."User/login.php", true, 303);
             exit();
         } else {
             if (!isset($_SESSION["CODE"])) {
