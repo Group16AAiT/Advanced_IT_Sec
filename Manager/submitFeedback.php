@@ -25,9 +25,9 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
         exit;
     }
     $checker = true;
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $comment = htmlspecialchars($_POST['comment']);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $comment = $_POST['comment'];
     $fileName = basename($_FILES['PDFfile']['name']);
 
     $query = "SELECT * FROM users WHERE user_name=?";
@@ -59,7 +59,10 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response']) &&
     $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
     $filetype = finfo_file($fileinfo, $filepath);
 
-
+    if ($fileSize > 5242880) { // 3 MB (1 byte * 1024 * 1024 * 3 (for 3 MB))
+        $fileError ="problem3";
+        $checker = false;
+     }
     if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
         $fileError ="problem3";
         $checker = false;

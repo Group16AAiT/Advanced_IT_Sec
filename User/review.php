@@ -25,8 +25,8 @@ $feedbacks= mysqli_stmt_get_result($stmt);
         <div class="card-content white-text">
           <span class="card-title">Card Title</span>
           <div>
-        <h5><?php echo $feedback['user_name'] ?></h5>
-            <p><?php echo $feedback['comment'] ?></p>
+        <h5><?php echo htmlspecialchars($feedback['user_name']) ?></h5>
+            <p><?php echo htmlspecialchars($feedback['comment']) ?></p>
         </div>
         </div>
         <div class="card-action">
