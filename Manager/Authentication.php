@@ -25,8 +25,8 @@ if (isset($_POST['user_login'])) {
 
             // Checking, if response is true or not
             if ($response->success == true) {
-                $email = htmlspecialchars(($_POST['userEmail']));
-                $password = htmlspecialchars(($_POST['userPassword']));
+                $email = ($_POST['userEmail']);
+                $password =($_POST['userPassword']);
                 $emailError = $validateClass->emailLoginCheck($email);
                 $passwordError = $validateClass->passwordLoginCheck($password);
 

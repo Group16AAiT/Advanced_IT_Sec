@@ -21,10 +21,10 @@ include 'error.php';
             // Checking, if response is true or not
             if ($response->success == true) {
                 $checker = true;
-                $name = htmlspecialchars($_POST['name']);
-                $email = htmlspecialchars($_POST['email']);
-                $comment = htmlspecialchars($_POST['comment']);
-                $id = htmlspecialchars($_POST['id']);
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $comment = $_POST['comment'];
+                $id = $_POST['id'];
                 $fileName = basename($_FILES['PDFfile']['name']);
 
 

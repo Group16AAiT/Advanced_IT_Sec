@@ -5,7 +5,7 @@ include 'tokenGenerate.php';
 
 if (isset($_POST['ban'])  && checkToken($_POST['token'])) {
     echo $_POST['user_id'];
-    $id=htmlspecialchars($_POST['user_id']);
+    $id=$_POST['user_id'];
     $query="UPDATE users SET ban=true WHERE id=?;";
 
     $stmt=mysqli_stmt_init($conn);
@@ -22,7 +22,7 @@ if (isset($_POST['ban'])  && checkToken($_POST['token'])) {
 
 if (isset($_POST['unban'])  && checkToken($_POST['token'])) {
     echo $_POST['user_id'];
-    $id=htmlspecialchars($_POST['user_id']);
+    $id=$_POST['user_id'];
     $query="UPDATE users SET ban=false WHERE id=?;";
     $stmt=mysqli_stmt_init($conn);
     mysqli_stmt_prepare($stmt,$query);
