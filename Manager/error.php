@@ -5,4 +5,5 @@ $passwordError = "";
 $confirmPasswordError = ""; 
 $captchaError = "";
 $generalError = ""; 
+$fileError = "";
 ?>
