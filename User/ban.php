@@ -75,6 +75,9 @@ include '../Manager/TokenGenerate.php';
                 <form method="post" action="../Manager/banHandler.php">
                 <input type="hidden" name="user_id" value=' . $id . '><br>
                 <input type="hidden" name="token" value=' . $token . '><br>
+
+                <input hidden type="radio" name="validated"  value="Yes" checked>
+                <input hidden type="radio" name="validated" value="No" >
                 ';
                 if ($row['ban'] == true) {
 

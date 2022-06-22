@@ -6,7 +6,8 @@ require_once 'Config.php';
 require_once 'TokenGenerate.php';
 require_once 'Error.php';
 
-    if (isset($_POST['updateFeedback']) && checkToken($_POST['token'])) {
+if (isset($_POST['updateFeedback'])) {
+    if (checkToken($_POST['token'])) {
         if (isset($_POST['g-recaptcha-response'])) {
             $recaptcha = $_POST['g-recaptcha-response'];
             $secret_key = $CAPTCHA_SECRET_KEY;
@@ -37,40 +38,38 @@ require_once 'Error.php';
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     $row = mysqli_fetch_assoc($result);
-                    if(strcmp($row['email'],$email)!=0){
-                        $emailError ="problem2";
+                    if (strcmp($row['email'], $email) != 0) {
+                        $emailError = "problem2";
                         $checker = false;
                     }
-
                 }
-                if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
-                    $userNameError ="problem";
+                if (strcmp($name, $_SESSION['USER_NAME']) != 0) {
+                    $userNameError = "problem";
                     $checker = false;
                 }
-if(isset($_FILES['PDFfile'])){
+                if (isset($_FILES['PDFfile'])) {
 
-    $fileName = basename($_FILES['PDFfile']['name']);
-    $filepath = $_FILES['PDFfile']['tmp_name'];
-    $fileSize = filesize($filepath);
-    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-    $filetype = finfo_file($fileinfo, $filepath);
+                    $fileName = basename($_FILES['PDFfile']['name']);
+                    $filepath = $_FILES['PDFfile']['tmp_name'];
+                    $fileSize = filesize($filepath);
+                    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $filetype = finfo_file($fileinfo, $filepath);
 
 
-    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
-        $fileError ="problem3";
-        $checker = false;
-    }
-    $uploaddir = 'C:\uploads/';
+                    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf") {
+                        $fileError = "problem3";
+                        $checker = false;
+                    }
+                    $uploaddir = 'C:\uploads/';
 
-    $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+                    $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+                }
 
-}
-             
-              
 
-                if($checker){
-                    if(isset($_FILES['PDFfile'])){
-                        $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']). $_SESSION['USER_NAME']).'pdf';
+
+                if ($checker) {
+                    if (isset($_FILES['PDFfile'])) {
+                        $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']) . $_SESSION['USER_NAME']) . 'pdf';
 
 
                         if (move_uploaded_file($_FILES['PDFfile']['tmp_name'],  $uploaddir . $newfilename)) {
@@ -83,32 +82,27 @@ if(isset($_FILES['PDFfile'])){
                         $stmt = mysqli_stmt_init($conn);
                         mysqli_stmt_prepare($stmt, $query);
                         mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $comment, $newfilename, $id);
-                    }
-                    else{
-                        
-                    $query = "UPDATE feedbacks SET user_name=?,email=?,comment=? WHERE id=?;";
-                    $stmt = mysqli_stmt_init($conn);
-                    mysqli_stmt_prepare($stmt, $query);
-                    mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $comment, $id);
+                    } else {
 
+                        $query = "UPDATE feedbacks SET user_name=?,email=?,comment=? WHERE id=?;";
+                        $stmt = mysqli_stmt_init($conn);
+                        mysqli_stmt_prepare($stmt, $query);
+                        mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $comment, $id);
                     }
-                
+
 
                     mysqli_stmt_execute($stmt);
                     header("Location:../User/review.php");
-
-                    }
-
-            }
-            else{
+                }
+            } else {
                 echo "captcha error";
             }
         } else {
             echo "captcha error 1";
-            // header("Location:../sign-up.php?status=unsuccessful"); 
-            //header("Location:../User/feedback.php"); 
+           
         }
     } else {
-        // header("Location:" . BASE_URL . "User/Error.php", true, 303);
-        // exit();
+        header("Location:" . BASE_URL . "User/Error.php", true, 303);
+        exit();
     }
+}
