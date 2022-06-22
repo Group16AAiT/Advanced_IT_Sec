@@ -46,7 +46,8 @@ include 'error.php';
                     $userNameError ="Username is not correct";
                     $checker = false;
                 }
-if(isset($_FILES['PDFfile'])){
+if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFfile']['tmp_name'])){
+
 
     $fileName = basename($_FILES['PDFfile']['name']);
     $filepath = $_FILES['PDFfile']['tmp_name'];
@@ -68,7 +69,7 @@ if(isset($_FILES['PDFfile'])){
               
 
                 if($checker){
-                    if(isset($_FILES['PDFfile'])){
+                    if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFfile']['tmp_name'])){
                         $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']). $_SESSION['USER_NAME']).'pdf';
 
 

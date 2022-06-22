@@ -30,12 +30,12 @@ echo'
 <div class="card-content ">
   <!-- header section -->
   <div class="invoice-address">
-        <h5>'.$name.'</h5>
+        <h5>'.htmlspecialchars($name).'</h5>
       </div>
   <!-- logo and title -->
   <div class="row mt-3 ">
     <div class="col m6 s12 pull-m6">
-      <h6 class="indigo-text invoice-number mr-1">comment# '.$count.'</h6>
+      <h6 class="indigo-text invoice-number mr-1">comment# '.htmlspecialchars($count).'</h6>
 
     </div>
   </div>
@@ -46,10 +46,10 @@ echo'
     
       
     <!-- <div >-->
-    <!--   <span>'.$email.'</span>-->
+    <!--   <span>'.htmlspecialchars($email).'</span>-->
     <!-- </div>-->
       <div >
-        <span>'.$comment.'</span>
+        <span>'.htmlspecialchars($comment).'</span>
       </div>
     </div>
   </div>

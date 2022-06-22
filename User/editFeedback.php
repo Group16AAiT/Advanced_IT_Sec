@@ -51,16 +51,16 @@ $filename = $row['file_name'];
 ?>
 <form action="editFeedback.php?id=<?php echo $id?>" method="post" id="feedbackForm" enctype="multipart/form-data">
 Name: <input type="text" name="name" value = <?php echo htmlspecialchars($username)?>><br/>
-<div><?php echo $userNameError; ?></div>
+<div class="err"><?php echo $userNameError; ?></div>
 Email: <input type="email" name="email" value = <?php echo htmlspecialchars($email)?>><br/>
-<div><?php echo $emailError; ?></div>
+<div class="err"><?php echo $emailError; ?></div>
 Comment: <textarea name="comment"><?php echo htmlspecialchars($comment)?></textarea><br/>
 File: <input type="file" accept=".pdf" name="PDFfile"><br/>
-<div><?php echo $fileError; ?></div>
+<div class="err"><?php echo $fileError; ?></div>
 <?php $ff = "../Manager/view.php?file=".urlencode ($filename); ?>
 old file: <a href=<?php echo $ff?> > <?php echo $filename?></a>
 
-<input type="hidden" name="id" value="<?php echo $id?>"><br>
+<input type="hidden" name="id" value="<?php echo htmlspecialchars($id)?>"><br>
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
 <div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
 <button type="submit" name="updateFeedback">Submit Comment</button>

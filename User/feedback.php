@@ -17,7 +17,7 @@
         <div >
             <input placeholder="Placeholder" id="first_name" type="text"  name="name">
             <label for="first_name">Username</label>
-            <div><?php echo $userNameError; ?></div>
+            <div class="err"><?php echo $userNameError; ?></div>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
         <div>
             <input placeholder="Placeholder" id="email" type="email" name="email" >
             <label for="email">Email</label>
-            <div><?php echo $emailError; ?></div>
+            <div class="err"><?php echo $emailError; ?></div>
 
             </div>
         </div>
@@ -45,7 +45,7 @@
             <input type="file" accept=".pdf" name="PDFfile">
         </div>
     
-        <div><?php echo $fileError; ?></div>
+        <div class="err"><?php echo $fileError; ?></div>
         
         </div>
         </div>
