@@ -59,6 +59,7 @@ include '../Manager/userRegister.php';
                               </div>
                               <div class="row">
                               <div><?php echo $generalError; ?></div>
+                              <input type="hidden" name="token" value="<?=newToken()?>"><br>
                                  <div class="input-field col s12">
                                     <button id="sbtn" class="btn blue lighten-3 waves-effect waves-light" type="submit" name="Registeruser">SIGN UP
                                     </button>

@@ -1,14 +1,16 @@
 <?php
 
-include_once 'config.php';
-include_once 'config2.php';
-include 'tokenGenerate.php';
-include 'error.php';
+include_once 'Access.php';
+require_once 'Config.php';
 
-    if (isset($_POST['updateFeedback']) && checkToken($_POST['token'])) {
+require_once 'TokenGenerate.php';
+require_once 'Error.php';
+
+if (isset($_POST['updateFeedback'])) {
+    if (checkToken($_POST['token'])) {
         if (isset($_POST['g-recaptcha-response'])) {
             $recaptcha = $_POST['g-recaptcha-response'];
-            $secret_key = CAPTCHA_SECRET_KEY;
+            $secret_key = $CAPTCHA_SECRET_KEY;
             $url = 'https://www.google.com/recaptcha/api/siteverify?secret='
                 . $secret_key . '&response=' . $recaptcha;
             $response = file_get_contents($url);
@@ -40,7 +42,6 @@ include 'error.php';
                         $emailError ="Email is not correct";
                         $checker = false;
                     }
-
                 }
                 if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
                     $userNameError ="Username is not correct";
@@ -49,11 +50,11 @@ include 'error.php';
 if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFfile']['tmp_name'])){
 
 
-    $fileName = basename($_FILES['PDFfile']['name']);
-    $filepath = $_FILES['PDFfile']['tmp_name'];
-    $fileSize = filesize($filepath);
-    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-    $filetype = finfo_file($fileinfo, $filepath);
+                    $fileName = basename($_FILES['PDFfile']['name']);
+                    $filepath = $_FILES['PDFfile']['tmp_name'];
+                    $fileSize = filesize($filepath);
+                    $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $filetype = finfo_file($fileinfo, $filepath);
 
 
     if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
@@ -62,11 +63,9 @@ if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFf
     }
     $uploaddir = 'C:\uploads/';
 
-    $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+                    $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+                }
 
-}
-             
-              
 
                 if($checker){
                     if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFfile']['tmp_name'])){
@@ -83,32 +82,27 @@ if(file_exists($_FILES['PDFfile']['tmp_name']) && is_uploaded_file($_FILES['PDFf
                         $stmt = mysqli_stmt_init($conn);
                         mysqli_stmt_prepare($stmt, $query);
                         mysqli_stmt_bind_param($stmt, "ssssi", $name, $email, $comment, $newfilename, $id);
-                    }
-                    else{
-                        
-                    $query = "UPDATE feedbacks SET user_name=?,email=?,comment=? WHERE id=?;";
-                    $stmt = mysqli_stmt_init($conn);
-                    mysqli_stmt_prepare($stmt, $query);
-                    mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $comment, $id);
+                    } else {
 
+                        $query = "UPDATE feedbacks SET user_name=?,email=?,comment=? WHERE id=?;";
+                        $stmt = mysqli_stmt_init($conn);
+                        mysqli_stmt_prepare($stmt, $query);
+                        mysqli_stmt_bind_param($stmt, "sssi", $name, $email, $comment, $id);
                     }
-                
+
 
                     mysqli_stmt_execute($stmt);
                     header("Location:../User/review.php");
-
-                    }
-
-            }
-            else{
+                }
+            } else {
                 echo "captcha error";
             }
         } else {
             echo "captcha error 1";
-            // header("Location:../sign-up.php?status=unsuccessful"); 
-            //header("Location:../User/feedback.php"); 
+           
         }
     } else {
-        // header("Location:" . BASE_URL . "User/Error.php", true, 303);
-        // exit();
+        header("Location:" . BASE_URL . "User/Error.php", true, 303);
+        exit();
     }
+}

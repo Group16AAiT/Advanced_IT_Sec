@@ -24,8 +24,7 @@ $sessionClass->userAuthenticationwithRedirectCheck();
     <header>
         <nav>
             <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="feedback.php">Feedback</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="review.php">View Review</a></li>
                 <li><a href="logout.php">logout</a></li>  
             </ul>

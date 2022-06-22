@@ -62,7 +62,7 @@ old file: <a href=<?php echo $ff?> > <?php echo $filename?></a>
 
 <input type="hidden" name="id" value="<?php echo htmlspecialchars($id)?>"><br>
 <input type="hidden" name="token" value="<?=newToken()?>"><br>
-<div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
+<div class="g-recaptcha" data-sitekey=<?=$CAPTCHA_SECRET_SITE?>></div> 
 <button type="submit" name="updateFeedback">Submit Comment</button>
 
 </body>

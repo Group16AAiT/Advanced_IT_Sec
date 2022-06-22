@@ -48,7 +48,8 @@ include '../Manager/Authentication.php';
                                  </div>
                               </div>
                                  <input type="hidden" name="token" value="<?=newToken()?>"><br>
-                                 <div class="g-recaptcha" data-sitekey=<?=CAPTCHA_SECRET_SITE?>></div> 
+                                 <div class="g-recaptcha" data-sitekey=<?=$CAPTCHA_SECRET_SITE?>></div> 
+                                 <div ><?php echo  $captchaError;?><div>
                               </div>
                               <div class="row">
                                  <div><?php echo $generalError; ?></div>

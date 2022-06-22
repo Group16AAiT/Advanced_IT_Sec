@@ -1,5 +1,5 @@
 <?php
-require_once 'config2.php';
+require_once 'Access.php';
 require_once 'Database.php';
 
 class ValidationClass

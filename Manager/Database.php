@@ -1,15 +1,15 @@
 <?php
-include 'config.php';
-require_once 'config2.php';
-include 'TokenGenerate.php';
-include 'error.php';
-require 'session.php';
-require '../vendor/autoload.php';
+require_once 'Access.php';
+require_once 'TokenGenerate.php';
+require_once 'Error.php';
+require 'Session.php';
+require '../vendor/Autoload.php';
 class DatabaseClass
 {
     public function userLogin($email,$password)
     {
-        include 'config.php';
+        
+        include  'Config.php';
         $sessionClass = new SessionClass();
         $sessionClass->authenticationwithoutRedirectCheck();
         $query = "SELECT * FROM users WHERE email=?";
@@ -45,12 +45,13 @@ class DatabaseClass
     }
     public function checkUser($userName)
     {
-        include 'config.php';
+        include  'Config.php';
         $query = "SELECT * FROM users WHERE user_name=? ";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $query)) {
-            $generalError =  "Something Went wrong";
+            header( 'HTTP/1.1 500 There was an error on the server and the request could not be completed.', TRUE, 500 );
+            exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $userName);
             mysqli_stmt_execute($stmt);
@@ -70,12 +71,13 @@ class DatabaseClass
 
     }
     public function checkEmail($email){
-        include 'config.php';
+        include  'Config.php';
         $query = "SELECT * FROM users WHERE email=?";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $query)) {
-            $generalError =  "Something Went wrong";
+            header( 'HTTP/1.1 500 There was an error on the server and the request could not be completed.', TRUE, 500 );
+            exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
@@ -97,15 +99,15 @@ class DatabaseClass
     {
         $sessionClass = new SessionClass();
         $sessionClass->authenticationwithoutRedirectCheck();
-        $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
-         $secret = json_encode ($g->generateSecret());
-        include 'config.php';
+        $gA = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
+         $key = json_encode ($gA->generateSecret());
+         include  'Config.php';
         $query = "INSERT INTO users(user_name,email,password,authenticator) VALUES (?,?,?,?);";
         
         $newPassword = password_hash($password,  PASSWORD_DEFAULT);
         $stmt = mysqli_stmt_init($conn);
         mysqli_stmt_prepare($stmt, $query);
-        mysqli_stmt_bind_param($stmt, "ssss", $userName, $email,  $newPassword, $secret);
+        mysqli_stmt_bind_param($stmt, "ssss", $userName, $email,  $newPassword, $key);
 
         if(mysqli_stmt_execute($stmt)){
         $sessionClass->setUser($userName,1);
@@ -117,12 +119,13 @@ class DatabaseClass
 
     public function getUser($userName)
     {
-        include 'config.php';
+        include  'Config.php';
         $query = "SELECT * FROM users WHERE user_name=? ";
         $stmt = mysqli_stmt_init($conn);
 
         if (!mysqli_stmt_prepare($stmt, $query)) {
-            $generalError =  "Something Went wrong";
+            header( 'HTTP/1.1 500 There was an error on the server and the request could not be completed.', TRUE, 500 );
+            exit();
         } else {
             mysqli_stmt_bind_param($stmt, "s", $userName);
             mysqli_stmt_execute($stmt);
