@@ -48,7 +48,7 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response'])) {
 
 
         if (strcmp($name, $_SESSION['USER_NAME']) != 0) {
-            $userNameError = "problem";
+            $userNameError = "Invalid username";
             $checker = false;
         }
         if (!isset($_FILES['PDFfile'])) {
@@ -62,40 +62,57 @@ if (isset($_POST['submitFeedback'])  && isset($_POST['g-recaptcha-response'])) {
             $filetype = finfo_file($fileinfo, $filepath);
 
             if ($fileSize > 5242880) {
-                $fileError = "problem3";
+                $fileError = "File cannot be more than 5MB";
                 $checker = false;
             }
             if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf") {
-                $fileError = "problem3";
+                $fileError = "File can only be pdf";
                 $checker = false;
-            }
-        }
-
-
-        $uploaddir = 'C:\uploads/';
-
-        $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
-
-        if ($checker) {
-            $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']) . $_SESSION['USER_NAME']) . '.pdf';
-
-            if (move_uploaded_file($_FILES['PDFfile']['tmp_name'],  $uploaddir . $newfilename)) {
-                echo "PDF succesfully uploaded.";
             } else {
-                echo "PDF uploading failed.";
-                exit;
+
+                $filepath = $_FILES['PDFfile']['tmp_name'];
+                $fileSize = filesize($filepath);
+                $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+                $filetype = finfo_file($fileinfo, $filepath);
+
+                if ($fileSize > 5242880) {
+                    $fileError = "problem3";
+                    $checker = false;
+                }
+                if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf") {
+                    $fileError = "problem3";
+                    $checker = false;
+                }
             }
 
-            $query = "INSERT INTO feedbacks(user_name,email,comment,file_name) VALUES (?,?,?,?);";
-            $stmt = mysqli_stmt_init($conn);
-            mysqli_stmt_prepare($stmt, $query);
-            mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $newfilename);
-            mysqli_stmt_execute($stmt);
-            header("Location:" . BASE_URL . "User/review.php", true, 303);
-            exit();
+
+            $uploaddir = 'C:\uploads/';
+
+            $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
+
+            if ($checker) {
+                $newfilename = date('Y-m-d H:i:s') . '_' . md5(basename($_FILES['PDFfile']['name']) . $_SESSION['USER_NAME']) . '.pdf';
+
+                if (move_uploaded_file($_FILES['PDFfile']['tmp_name'],  $uploaddir . $newfilename)) {
+                    echo "PDF succesfully uploaded.";
+                } else {
+                    echo "PDF uploading failed.";
+                    exit;
+                }
+
+                $query = "INSERT INTO feedbacks(user_name,email,comment,file_name) VALUES (?,?,?,?);";
+                $stmt = mysqli_stmt_init($conn);
+                mysqli_stmt_prepare($stmt, $query);
+                mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $comment, $newfilename);
+                mysqli_stmt_execute($stmt);
+                header("Location:" . BASE_URL . "User/review.php", true, 303);
+                exit();
+            }
         }
+
     } else {
         header("Location:" . BASE_URL . "User/Error.php", true, 303);
         exit();
     }
+
 }

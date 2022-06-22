@@ -38,13 +38,13 @@ if (isset($_POST['updateFeedback'])) {
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     $row = mysqli_fetch_assoc($result);
-                    if (strcmp($row['email'], $email) != 0) {
-                        $emailError = "problem2";
+                    if(strcmp($row['email'],$email)!=0){
+                        $emailError ="Email is not correct";
                         $checker = false;
                     }
                 }
-                if (strcmp($name, $_SESSION['USER_NAME']) != 0) {
-                    $userNameError = "problem";
+                if(strcmp($name, $_SESSION['USER_NAME'])!=0 ){
+                    $userNameError ="Username is not correct";
                     $checker = false;
                 }
                 if (isset($_FILES['PDFfile'])) {
@@ -56,11 +56,11 @@ if (isset($_POST['updateFeedback'])) {
                     $filetype = finfo_file($fileinfo, $filepath);
 
 
-                    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf") {
-                        $fileError = "problem3";
-                        $checker = false;
-                    }
-                    $uploaddir = 'C:\uploads/';
+    if ($_FILES['PDFfile']['type'] != "application/pdf" || mime_content_type($_FILES['PDFfile']['tmp_name']) != "application/pdf" || $filetype !=  "application/pdf" ) {
+        $fileError ="File can only be PDF";
+        $checker = false;
+    }
+    $uploaddir = 'C:\uploads/';
 
                     $uploadfile = $uploaddir . basename($_FILES['PDFfile']['name']);
                 }
